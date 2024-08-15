@@ -4,7 +4,7 @@
       <Header />
     </header>
     <main class="main">
-      <MainComponent />
+      <router-view />
     </main>
     <footer class="footer">
       <Footer />
@@ -15,8 +15,6 @@
 <script setup>
 import Header from "../src/components/Header.vue";
 import Footer from "../src/components/Footer.vue";
-import MainComponent from "../src/components/MainComponent.vue";
-import MainAfter from "@/components/MainAfter.vue";
 </script>
 
 <style scoped>
@@ -37,9 +35,9 @@ import MainAfter from "@/components/MainAfter.vue";
 .main {
   flex: 1;
   padding: 2rem;
-  max-width: 1400px;  /* 양옆 공백을 줄이기 위해 최대 너비를 증가 */
+  max-width: 1400px;
   margin: 0 auto;
-  width: 95%;  /* 전체 너비의 95%를 사용 */
+  width: 95%;
 }
 
 .footer {

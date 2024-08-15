@@ -9,11 +9,11 @@
           </select>
           <select v-model="selectedTeam" @change="applyFilters" class="filter-item">
             <option value="">모든 팀</option>
-            <option v-for="team in teams" :key="team.teamId" :value="team.teamName">{{ team.teamName }}</option>
+            <option v-for="team in uniqueTeams" :key="team" :value="team">{{ team }}</option>
           </select>
           <select v-model="selectedStadium" @change="applyFilters" class="filter-item">
             <option value="">모든 구장</option>
-            <option v-for="stadium in stadiums" :key="stadium.stadiumId" :value="stadium.stadiumName">{{ stadium.stadiumName }}</option>
+            <option v-for="stadium in uniqueStadiums" :key="stadium" :value="stadium">{{ stadium }}</option>
           </select>
         </div>
 
@@ -39,7 +39,7 @@
               <button
                   class="book-button"
                   :disabled="game.sellable !== 'S'"
-                  @click="bookGame(game.gameId)"
+                  @click="goToBookingPage(game.gameId)"
               >
                 {{ game.sellable === 'S' ? '예매하기' : '예매불가' }}
               </button>
@@ -89,37 +89,15 @@
 <script>
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
+    const router = useRouter();
     const games = ref([]);
     const filteredGames = ref([]);
     const teamRanks = ref([]);
     const teamLogos = ref({});
-    const teams = ref([
-      {teamId: 1, teamName: 'KIA'},
-      {teamId: 2, teamName: '두산'},
-      {teamId: 3, teamName: 'LG'},
-      {teamId: 4, teamName: '삼성'},
-      {teamId: 5, teamName: '키움'},
-      {teamId: 6, teamName: 'SSG'},
-      {teamId: 7, teamName: '한화'},
-      {teamId: 8, teamName: '롯데'},
-      {teamId: 9, teamName: 'KT'},
-      {teamId: 10, teamName: 'NC'}
-    ]);
-
-    const stadiums = ref([
-      {stadiumId: 1, stadiumName: '이글스파크'},
-      {stadiumId: 2, stadiumName: '사직야구장'},
-      {stadiumId: 3, stadiumName: 'KT위즈파크'},
-      {stadiumId: 4, stadiumName: '잠실야구장'},
-      {stadiumId: 5, stadiumName: '창원NC파크'},
-      {stadiumId: 6, stadiumName: '랜더스필드'},
-      {stadiumId: 7, stadiumName: '챔피언스필드'},
-      {stadiumId: 8, stadiumName: '대구삼성라이온즈파크'},
-      {stadiumId: 9, stadiumName: '고척스카이돔'}
-    ]);
     const selectedDate = ref('');
     const selectedTeam = ref('');
     const selectedStadium = ref('');
@@ -130,6 +108,18 @@ export default {
       if (games.value.length === 0) return [];
       const dates = games.value.map(game => game.gameDate);
       return [...new Set(dates)];
+    });
+
+    const uniqueTeams = computed(() => {
+      if (games.value.length === 0) return [];
+      const teams = games.value.flatMap(game => [game.homeTeamName, game.awayTeamName]);
+      return [...new Set(teams)];
+    });
+
+    const uniqueStadiums = computed(() => {
+      if (games.value.length === 0) return [];
+      const stadiums = games.value.map(game => game.stadiumName);
+      return [...new Set(stadiums)];
     });
 
     const totalPages = computed(() => Math.ceil(filteredGames.value.length / pageSize));
@@ -147,16 +137,6 @@ export default {
       } catch (error) {
         console.error('Error fetching games:', error);
       }
-    };
-
-    const fetchTeams = async () => {
-      const response = await axios.get('http://localhost:8080/teams/all');
-      teams.value = response.data;
-    };
-
-    const fetchStadiums = async () => {
-      const response = await axios.get('http://localhost:8080/stadiums/all');
-      stadiums.value = response.data;
     };
 
     const fetchTeamRanks = async () => {
@@ -202,14 +182,11 @@ export default {
       month: 'long',
       day: 'numeric'
     });
-    const formatTime = (time) => time.slice(0, 5);
-    const getTeamName = (teamId) => {
-      const team = teams.value.find((t) => t.teamId === teamId);
-      return team ? team.teamName : `팀 ${teamId}`;
-    };
 
-    const bookGame = (gameId) => {
-      console.log(`예매하기: ${gameId}`);
+    const formatTime = (time) => time.slice(0, 5);
+
+    const goToBookingPage = (gameId) => {
+      router.push({ name: 'TicketBookingView', params: { gameId } });
     };
 
     const login = () => {
@@ -222,21 +199,20 @@ export default {
 
     onMounted(() => {
       fetchGames();
-      fetchTeams();
-      fetchStadiums();
-      fetchTeamRanks();
+      fetchTeamRanks();  // 팀 순위 데이터를 가져옴
     });
 
     return {
       games,
+      goToBookingPage,
       teamRanks,
       teamLogos,
-      teams,
-      stadiums,
       selectedDate,
       selectedTeam,
       selectedStadium,
       uniqueDates,
+      uniqueTeams,
+      uniqueStadiums,
       paginatedGames,
       currentPage,
       totalPages,
@@ -244,8 +220,6 @@ export default {
       nextPage,
       formatDate,
       formatTime,
-      getTeamName,
-      bookGame,
       login,
       register,
       applyFilters,
