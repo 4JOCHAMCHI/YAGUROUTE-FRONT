@@ -235,7 +235,7 @@ export default {
   gap: 2rem;
   background-color: white;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 강도를 약간 높임 */
   padding: 2rem;
   min-height: 80vh;
 }
@@ -278,6 +278,12 @@ export default {
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.filter-item:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 호버 시 가벼운 그림자 */
+  border-color: #bbb; /* 호버 시 테두리 색상 살짝 변경 */
 }
 
 .games-table, .ranking-table {
@@ -288,6 +294,7 @@ export default {
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 1rem;
+  transition: box-shadow 0.3s ease;
 }
 
 .games-table th, .games-table td,
@@ -295,11 +302,20 @@ export default {
   padding: 1rem;
   text-align: left;
   border-bottom: 1px solid #e0e0e0;
+  transition: background-color 0.3s ease;
 }
 
 .games-table th, .ranking-table th {
   background-color: #f5f5f5;
   font-weight: bold;
+}
+
+.games-table tr:hover, .ranking-table tr:hover {
+  background-color: #f0f0f0; /* 호버 시 행 배경색 변경 */
+}
+
+.games-table:hover, .ranking-table:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 호버 시 테이블에 그림자 강화 */
 }
 
 .games-table .fixed-width {
@@ -320,6 +336,11 @@ export default {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.pagination-button:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 추가 */
 }
 
 .pagination-button:disabled {
@@ -346,11 +367,12 @@ export default {
   border-radius: 4px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .auth-button:hover {
   background-color: #ff5252;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 추가 */
 }
 
 .book-button {
@@ -360,6 +382,12 @@ export default {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.book-button:hover {
+  background-color:  #e65555; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* hover 시 그림자 추가 */
 }
 
 .book-button:disabled {
@@ -371,5 +399,10 @@ export default {
   width: 30px;
   height: 30px;
   object-fit: contain;
+  transition: box-shadow 0.3s ease;
+}
+
+.team-logo:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 호버 시 로고에 그림자 추가 */
 }
 </style>
