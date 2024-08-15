@@ -56,9 +56,15 @@
       </div>
     </div>
     <div class="right-container">
-      <div class="auth-buttons">
-        <button @click="login" class="auth-button">로그인</button>
-        <button @click="register" class="auth-button">회원가입</button>
+      <div class="user-info">
+        <h3 class="user-name">{{ user.name }}님, 환영합니다!</h3>
+        <p class="user-email">{{ user.email }}</p>
+        <div class="recent-booking">
+          <h4>최근 예매 내역</h4>
+          <p v-if="user.recentBooking">{{ user.recentBooking }}</p>
+          <p v-else>최근 예매 내역이 없습니다.</p>
+        </div>
+        <button @click="logout" class="auth-button">로그아웃</button>
       </div>
       <div class="team-rankings">
         <table class="ranking-table">
@@ -125,6 +131,12 @@ export default {
     const selectedStadium = ref('');
     const currentPage = ref(0);
     const pageSize = 5;
+
+    const user = ref({
+      name: '홍길동',
+      email: 'hong@example.com',
+      recentBooking: '2023-08-20 LG vs 두산'
+    });
 
     const uniqueDates = computed(() => {
       if (games.value.length === 0) return [];
@@ -212,12 +224,9 @@ export default {
       console.log(`예매하기: ${gameId}`);
     };
 
-    const login = () => {
-      console.log('로그인');
-    };
-
-    const register = () => {
-      console.log('회원가입');
+    const logout = () => {
+      console.log('로그아웃');
+      // 로그아웃 로직 구현
     };
 
     onMounted(() => {
@@ -246,9 +255,9 @@ export default {
       formatTime,
       getTeamName,
       bookGame,
-      login,
-      register,
+      logout,
       applyFilters,
+      user,
     };
   },
 };
@@ -357,13 +366,6 @@ export default {
   margin: 0 1rem;
 }
 
-.auth-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
 .auth-button {
   padding: 0.75rem;
   background-color: #ff6b6b;
@@ -397,5 +399,36 @@ export default {
   width: 30px;
   height: 30px;
   object-fit: contain;
+}
+
+.user-info {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.user-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.user-email, .user-points, .user-favorite-team {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.recent-booking {
+  margin-top: 1rem;
+  border-top: 1px solid #ddd;
+  padding-top: 1rem;
+}
+
+.recent-booking h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
 }
 </style>

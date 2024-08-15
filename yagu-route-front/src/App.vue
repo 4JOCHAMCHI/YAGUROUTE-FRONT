@@ -1,14 +1,14 @@
 <template>
-  <div class="all">
-    <div class="header">
+  <div class="app">
+    <header class="header">
       <Header />
-    </div>
-    <div class="main">
+    </header>
+    <main class="main">
       <MainComponent />
-    </div>
-    <div class="footer">
+    </main>
+    <footer class="footer">
       <Footer />
-    </div>
+    </footer>
   </div>
 </template>
 
@@ -16,37 +16,35 @@
 import Header from "../src/components/Header.vue";
 import Footer from "../src/components/Footer.vue";
 import MainComponent from "../src/components/MainComponent.vue";
-
+import MainAfter from "@/components/MainAfter.vue";
 </script>
 
 <style scoped>
-body {
-  margin: 0;
-  padding: 0;
-  width: 100vw;
-  height: 100vh;
-}
-
-.all {
-  display: grid;
-  grid-template-columns: 1fr; /* 열을 하나만 사용 */
-  grid-template-rows: auto 1fr auto; /* 헤더와 푸터는 자동 크기, 중간은 최대 크기 */
-  height: 100vh; /* 화면 전체 높이 */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f5f5;
 }
 
 .header {
-  grid-row-start: 1;
+  background-color: #f5f5f5;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .main {
-  grid-row-start: 2;
-  display: flex;
-  justify-content: center; /* 가로 중앙 정렬 */
-  align-items: center; /* 세로 중앙 정렬 */
-  padding: 20px;
+  flex: 1;
+  padding: 2rem;
+  max-width: 1400px;  /* 양옆 공백을 줄이기 위해 최대 너비를 증가 */
+  margin: 0 auto;
+  width: 95%;  /* 전체 너비의 95%를 사용 */
 }
 
 .footer {
-  grid-row-start: 3;
+  background-color: #f5f5f5;
+  padding: 1rem 0;
+  text-align: center;
 }
 </style>
