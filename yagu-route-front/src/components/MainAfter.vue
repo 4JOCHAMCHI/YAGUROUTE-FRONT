@@ -9,11 +9,11 @@
           </select>
           <select v-model="selectedTeam" @change="applyFilters" class="filter-item">
             <option value="">모든 팀</option>
-            <option v-for="team in uniqueTeams" :key="team" :value="team">{{ team }}</option>
+            <option v-for="team in teams" :key="team.teamId" :value="team.teamName">{{ team.teamName }}</option>
           </select>
           <select v-model="selectedStadium" @change="applyFilters" class="filter-item">
             <option value="">모든 구장</option>
-            <option v-for="stadium in uniqueStadiums" :key="stadium" :value="stadium">{{ stadium }}</option>
+            <option v-for="stadium in stadiums" :key="stadium.stadiumId" :value="stadium.stadiumName">{{ stadium.stadiumName }}</option>
           </select>
         </div>
 
@@ -39,7 +39,7 @@
               <button
                   class="book-button"
                   :disabled="game.sellable !== 'S'"
-                  @click="goToBookingPage(game.gameId)"
+                  @click="bookGame(game.gameId)"
               >
                 {{ game.sellable === 'S' ? '예매하기' : '예매불가' }}
               </button>
@@ -56,9 +56,15 @@
       </div>
     </div>
     <div class="right-container">
-      <div class="auth-buttons">
-        <button @click="login" class="auth-button">로그인</button>
-        <button @click="register" class="auth-button">회원가입</button>
+      <div class="user-info">
+        <h3 class="user-name">{{ user.name }}님, 환영합니다!</h3>
+        <p class="user-email">{{ user.email }}</p>
+        <div class="recent-booking">
+          <h4>최근 예매 내역</h4>
+          <p v-if="user.recentBooking">{{ user.recentBooking }}</p>
+          <p v-else>최근 예매 내역이 없습니다.</p>
+        </div>
+        <button @click="logout" class="auth-button">로그아웃</button>
       </div>
       <div class="team-rankings">
         <table class="ranking-table">
@@ -89,37 +95,53 @@
 <script>
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
-import { useRouter } from 'vue-router';
 
 export default {
   setup() {
-    const router = useRouter();
     const games = ref([]);
     const filteredGames = ref([]);
     const teamRanks = ref([]);
     const teamLogos = ref({});
+    const teams = ref([
+      {teamId: 1, teamName: 'KIA'},
+      {teamId: 2, teamName: '두산'},
+      {teamId: 3, teamName: 'LG'},
+      {teamId: 4, teamName: '삼성'},
+      {teamId: 5, teamName: '키움'},
+      {teamId: 6, teamName: 'SSG'},
+      {teamId: 7, teamName: '한화'},
+      {teamId: 8, teamName: '롯데'},
+      {teamId: 9, teamName: 'KT'},
+      {teamId: 10, teamName: 'NC'}
+    ]);
+
+    const stadiums = ref([
+      {stadiumId: 1, stadiumName: '이글스파크'},
+      {stadiumId: 2, stadiumName: '사직야구장'},
+      {stadiumId: 3, stadiumName: 'KT위즈파크'},
+      {stadiumId: 4, stadiumName: '잠실야구장'},
+      {stadiumId: 5, stadiumName: '창원NC파크'},
+      {stadiumId: 6, stadiumName: '랜더스필드'},
+      {stadiumId: 7, stadiumName: '챔피언스필드'},
+      {stadiumId: 8, stadiumName: '대구삼성라이온즈파크'},
+      {stadiumId: 9, stadiumName: '고척스카이돔'}
+    ]);
     const selectedDate = ref('');
     const selectedTeam = ref('');
     const selectedStadium = ref('');
     const currentPage = ref(0);
     const pageSize = 5;
 
+    const user = ref({
+      name: '홍길동',
+      email: 'hong@example.com',
+      recentBooking: '2023-08-20 LG vs 두산'
+    });
+
     const uniqueDates = computed(() => {
       if (games.value.length === 0) return [];
       const dates = games.value.map(game => game.gameDate);
       return [...new Set(dates)];
-    });
-
-    const uniqueTeams = computed(() => {
-      if (games.value.length === 0) return [];
-      const teams = games.value.flatMap(game => [game.homeTeamName, game.awayTeamName]);
-      return [...new Set(teams)];
-    });
-
-    const uniqueStadiums = computed(() => {
-      if (games.value.length === 0) return [];
-      const stadiums = games.value.map(game => game.stadiumName);
-      return [...new Set(stadiums)];
     });
 
     const totalPages = computed(() => Math.ceil(filteredGames.value.length / pageSize));
@@ -137,6 +159,16 @@ export default {
       } catch (error) {
         console.error('Error fetching games:', error);
       }
+    };
+
+    const fetchTeams = async () => {
+      const response = await axios.get('http://localhost:8080/teams/all');
+      teams.value = response.data;
+    };
+
+    const fetchStadiums = async () => {
+      const response = await axios.get('http://localhost:8080/stadiums/all');
+      stadiums.value = response.data;
     };
 
     const fetchTeamRanks = async () => {
@@ -182,37 +214,38 @@ export default {
       month: 'long',
       day: 'numeric'
     });
-
     const formatTime = (time) => time.slice(0, 5);
-
-    const goToBookingPage = (gameId) => {
-      router.push({ name: 'TicketBookingView', params: { gameId } });
+    const getTeamName = (teamId) => {
+      const team = teams.value.find((t) => t.teamId === teamId);
+      return team ? team.teamName : `팀 ${teamId}`;
     };
 
-    const login = () => {
-      console.log('로그인');
+    const bookGame = (gameId) => {
+      console.log(`예매하기: ${gameId}`);
     };
 
-    const register = () => {
-      console.log('회원가입');
+    const logout = () => {
+      console.log('로그아웃');
+      // 로그아웃 로직 구현
     };
 
     onMounted(() => {
       fetchGames();
-      fetchTeamRanks();  // 팀 순위 데이터를 가져옴
+      fetchTeams();
+      fetchStadiums();
+      fetchTeamRanks();
     });
 
     return {
       games,
-      goToBookingPage,
       teamRanks,
       teamLogos,
+      teams,
+      stadiums,
       selectedDate,
       selectedTeam,
       selectedStadium,
       uniqueDates,
-      uniqueTeams,
-      uniqueStadiums,
       paginatedGames,
       currentPage,
       totalPages,
@@ -220,9 +253,11 @@ export default {
       nextPage,
       formatDate,
       formatTime,
-      login,
-      register,
+      getTeamName,
+      bookGame,
+      logout,
       applyFilters,
+      user,
     };
   },
 };
@@ -235,7 +270,7 @@ export default {
   gap: 2rem;
   background-color: white;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 강도를 약간 높임 */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   padding: 2rem;
   min-height: 80vh;
 }
@@ -278,12 +313,6 @@ export default {
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.filter-item:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 호버 시 가벼운 그림자 */
-  border-color: #bbb; /* 호버 시 테두리 색상 살짝 변경 */
 }
 
 .games-table, .ranking-table {
@@ -294,7 +323,6 @@ export default {
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 1rem;
-  transition: box-shadow 0.3s ease;
 }
 
 .games-table th, .games-table td,
@@ -302,20 +330,11 @@ export default {
   padding: 1rem;
   text-align: left;
   border-bottom: 1px solid #e0e0e0;
-  transition: background-color 0.3s ease;
 }
 
 .games-table th, .ranking-table th {
   background-color: #f5f5f5;
   font-weight: bold;
-}
-
-.games-table tr:hover, .ranking-table tr:hover {
-  background-color: #f0f0f0; /* 호버 시 행 배경색 변경 */
-}
-
-.games-table:hover, .ranking-table:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 호버 시 테이블에 그림자 강화 */
 }
 
 .games-table .fixed-width {
@@ -336,11 +355,6 @@ export default {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: box-shadow 0.3s ease, background-color 0.3s ease;
-}
-
-.pagination-button:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 추가 */
 }
 
 .pagination-button:disabled {
@@ -352,13 +366,6 @@ export default {
   margin: 0 1rem;
 }
 
-.auth-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
 .auth-button {
   padding: 0.75rem;
   background-color: #ff6b6b;
@@ -367,12 +374,11 @@ export default {
   border-radius: 4px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: background-color 0.3s;
 }
 
 .auth-button:hover {
   background-color: #ff5252;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 추가 */
 }
 
 .book-button {
@@ -382,12 +388,6 @@ export default {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.book-button:hover {
-  background-color:  #e65555;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* hover 시 그림자 추가 */
 }
 
 .book-button:disabled {
@@ -399,10 +399,36 @@ export default {
   width: 30px;
   height: 30px;
   object-fit: contain;
-  transition: box-shadow 0.3s ease;
 }
 
-.team-logo:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 호버 시 로고에 그림자 추가 */
+.user-info {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.user-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.user-email, .user-points, .user-favorite-team {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.recent-booking {
+  margin-top: 1rem;
+  border-top: 1px solid #ddd;
+  padding-top: 1rem;
+}
+
+.recent-booking h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
 }
 </style>

@@ -6,9 +6,6 @@
     <div class="menu">
       <span>야구 예매</span>
     </div>
-    <div class="login">
-      <p>login</p>
-    </div>
   </div>
 </template>
 
