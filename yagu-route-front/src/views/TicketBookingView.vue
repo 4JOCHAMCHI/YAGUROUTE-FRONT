@@ -161,8 +161,6 @@ h2 {
 .seat-grid-container {
   padding: 5px;
   height: 100%;
-  border: 1px solid #ccc;
-  border-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
