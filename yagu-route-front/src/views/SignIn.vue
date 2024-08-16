@@ -73,10 +73,10 @@ const redirectToGoogleLogin = () => {
               type="password"
               required
           ></v-text-field>
-          <v-btn type="submit" color="#cf1c4e" size="x-large" class="text-h6" block>로그인</v-btn>
+          <v-btn type="submit" color="#B6D6F2" size="x-large" class="text-h6" block>로그인</v-btn>
 
         </v-form>
-        <v-alert v-if="errorMessage" type="error" class="mt-3">{{ errorMessage }}</v-alert>
+        <v-alert v-if="errorMessage" type="error" color="#1A237E" class="mt-3">{{ errorMessage }}</v-alert>
 
         <!-- 소셜 로그인 버튼 -->
         <div class="social-login mt-8 ga-2">

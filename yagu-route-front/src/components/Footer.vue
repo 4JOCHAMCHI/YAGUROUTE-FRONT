@@ -1,6 +1,6 @@
 <template>
   <div class="footerAll">
-    <div class="main">
+    <div class="main font-weight-bold">
       <p class="top">(주)Tuna | 대표이사: Dennis | 사업자 등록번호: 111-11-11111 | 메일:tuna@tuna.com</p>
       <span>이용약관</span>
       <span>개인정보처리방침</span>
@@ -16,9 +16,11 @@
 <style scoped>
 .footerAll {
   display: grid;
-  height: 120px;
+  height: 100px;
   grid-template-columns: 100px auto 100px;
-  background-color: #ff6b6b;
+  background-color: #1A237E;
+  color: white;
+
 }
 
 .main {
@@ -40,8 +42,4 @@
   margin-top: 0;
 }
 
-.bottom {
-  margin-top: 20px;
-  margin-bottom: 0;
-}
 </style>
