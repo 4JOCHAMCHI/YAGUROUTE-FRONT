@@ -159,17 +159,20 @@ h2 {
 }
 
 .seat-grid-container {
-  padding: 5px 0;
-  overflow: auto;
+  padding: 5px;
   height: 100%;
   border: 1px solid #ccc;
   border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .seat-grid {
   display: grid;
   gap: 3px;
-  padding: 15px;
+  width: 100%;
+  height: 100%;
 }
 
 .selected-seat-container {
