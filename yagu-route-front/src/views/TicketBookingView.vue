@@ -1,6 +1,6 @@
 <template>
   <div class="seat-reservation">
-    <h1>경기 정보</h1>
+    <h1>{{ home }}&nbsp;&nbsp; VS  &nbsp;&nbsp;{{ away }}</h1>
     <div v-if="loading">좌석 정보를 불러오는 중...</div>
     <div v-else class="reservation-layout">
       <div class="seat-grid-container">
@@ -36,6 +36,8 @@ const props = defineProps({
 })
 
 const id = ref(props.gameId);
+const home = ref(null);
+const away = ref(null);
 
 const seats = ref([])
 const occupiedSeats = ref([])
@@ -79,7 +81,23 @@ const reserveSeat = async (gameId, seatId) => {
   }
 }
 
+const fetchTeams = async (gameId) => {
+  try {
+    let url = `http://localhost:8080/game/teams/${gameId}`;
+    const response = await axios.get(url);
 
+    if (response.status === 200) {
+      console.log(response.data);
+      home.value = response.data.homeTeamName;
+      away.value = response.data.awayTeamName;
+
+    } else {
+      console.error("Error: Response status is not 200");
+    }
+  } catch (error) {
+    console.error("Fetch error: " + error.message);
+  }
+}
 
 // 전체 좌석 정보를 가져오는 함수
 const fetchAllSeats = async (gameId) => {
@@ -88,7 +106,6 @@ const fetchAllSeats = async (gameId) => {
     const response = await axios.get(url);
 
     if (response.status === 200) {
-      console.log(response.data);
       return response.data.result.allSeats;
     } else {
       console.error("Error: Response status is not 200");
@@ -123,6 +140,8 @@ onMounted(async () => {
       fetchAllSeats(id.value),
       fetchOccupiedSeats(id.value)
     ])
+
+    await fetchTeams(id.value);
 
     seats.value = allSeats;
     occupiedSeats.value = unavailableSeats;
@@ -207,12 +226,19 @@ h2 {
 
 button {
   padding: 10px 20px;
-  background-color: #cf1c4e;
-  color: white;
+  background-color: #B6D6F2;
+  color: #011640;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
   width: 100%;
   margin-top: 20px;
+}
+
+button:hover {
+  background-color: #1A237E;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 button:disabled {
