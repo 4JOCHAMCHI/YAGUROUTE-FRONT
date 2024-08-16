@@ -331,7 +331,7 @@ export default {
 
 .pagination-button {
   padding: 0.5rem 1rem;
-  background-color: #ff6b6b;
+  background-color: #1A237E;
   color: white;
   border: none;
   border-radius: 4px;
@@ -361,8 +361,8 @@ export default {
 
 .auth-button {
   padding: 0.75rem;
-  background-color: #ff6b6b;
-  color: white;
+  background-color: #B6D6F2;
+  color: #011640;
   border: none;
   border-radius: 4px;
   font-size: 1rem;
@@ -371,14 +371,16 @@ export default {
 }
 
 .auth-button:hover {
-  background-color: #ff5252;
+  //background-color: #6eafe8;
+  background-color: #1A237E;
+  color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 추가 */
 }
 
 .book-button {
   padding: 0.5rem 1rem;
-  background-color: #ff6b6b;
-  color: white;
+  background-color: #B6D6F2;
+  color: #011640;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -386,7 +388,8 @@ export default {
 }
 
 .book-button:hover {
-  background-color:  #e65555;
+  background-color:  #1A237E;
+  color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* hover 시 그림자 추가 */
 }
 

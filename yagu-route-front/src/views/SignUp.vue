@@ -88,9 +88,9 @@ const signup = async () => {
               type="password"
               required
           ></v-text-field>
-          <v-btn type="submit" color="#cf1c4e" size="x-large" class="text-h6" block>가입하기</v-btn>
+          <v-btn type="submit" color="#B6D6F2" size="x-large" class="text-h6" block>가입하기</v-btn>
         </v-form>
-        <v-alert v-if="errorMessage" type="error" class="mt-3">{{ errorMessage }}</v-alert>
+        <v-alert v-if="errorMessage" type="error" color="#1A237E" class="mt-3">{{ errorMessage }}</v-alert>
       </v-card-text>
     </v-card>
 

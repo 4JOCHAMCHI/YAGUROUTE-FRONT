@@ -1,52 +1,64 @@
 <template>
-  <div class="headerAll">
-    <div class="logo">
-      <h3>Yagu-Route</h3>
-    </div>
-    <div class="menu">
-      <span>야구 예매</span>
-    </div>
-  </div>
+  <v-container class="headerAll" fluid>
+    <v-row no-gutters align="center">
+      <v-col class="logo" cols="2">
+        <v-btn
+            text
+            @click="goToHome"
+            class="logo-btn"
+        >
+          <v-icon class="logo-icon">mdi-baseball</v-icon>
+        </v-btn>
+      </v-col>
+      <v-col class="menu" cols="8">
+        <span class="font-weight-bold">YAGU-ROUTE</span>
+      </v-col>
+      <v-col class="login" cols="2">
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
+
+function goToHome() {
+  router.push({ name: 'MainComponent' })  // 'Home'은 라우트의 이름입니다. 실제 이름으로 교체하세요.
+}
 </script>
 
 <style scoped>
 .headerAll {
-  display: grid;
-  grid-template-columns: 100px auto 100px;
-  background-color: #ff6b6b;
+  background-color: #1A237E;
   height: 70px;
 }
 
 .logo {
-  align-self: center;
-  justify-self: center;
+  text-align: center;
 }
 
-.logo h3{
-  margin: 0;
+.logo-btn {
+  background-color: #1A237E; /* 버튼 배경 색상, 헤더와 동일 */
+  border-radius: 50%; /* 버튼을 둥글게 만들기 */
+}
+
+.logo-icon {
+  font-size: 36px; /* 아이콘 크기 조정 */
+  color: #ffffff; /* 아이콘 색상 */
 }
 
 .menu {
-  align-self: center;
+  text-align: center;
 }
 
-.menu span{
+.menu span {
   margin-left: 20px;
+  color: white;
 }
 
 .login {
-  align-self: center;
-  justify-self: center;
+  text-align: center;
 }
-
-.login p {
-  margin: 0;
-
-}
-
-
 </style>
