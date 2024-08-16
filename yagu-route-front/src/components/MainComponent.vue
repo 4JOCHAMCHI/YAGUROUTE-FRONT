@@ -57,8 +57,8 @@
     </div>
     <div class="right-container">
       <div class="auth-buttons">
-        <button @click="login" class="auth-button">로그인</button>
-        <button @click="register" class="auth-button">회원가입</button>
+        <button @click="goToSignInPage" class="auth-button">로그인</button>
+        <button @click="goToSignUpPage" class="auth-button">회원가입</button>
       </div>
       <div class="team-rankings">
         <table class="ranking-table">
@@ -189,12 +189,12 @@ export default {
       router.push({ name: 'TicketBookingView', params: { gameId } });
     };
 
-    const login = () => {
-      console.log('로그인');
+    const goToSignInPage = () => {
+      router.push({ name: 'SignIn' });
     };
 
-    const register = () => {
-      console.log('회원가입');
+    const goToSignUpPage = () => {
+      router.push({ name: 'SignUp' });
     };
 
     onMounted(() => {
@@ -205,6 +205,8 @@ export default {
     return {
       games,
       goToBookingPage,
+      goToSignInPage,
+      goToSignUpPage,
       teamRanks,
       teamLogos,
       selectedDate,
@@ -220,8 +222,6 @@ export default {
       nextPage,
       formatDate,
       formatTime,
-      login,
-      register,
       applyFilters,
     };
   },
