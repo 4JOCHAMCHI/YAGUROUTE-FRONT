@@ -386,7 +386,7 @@ export default {
 }
 
 .book-button:hover {
-  background-color:  #e65555; 
+  background-color:  #e65555;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* hover 시 그림자 추가 */
 }
 

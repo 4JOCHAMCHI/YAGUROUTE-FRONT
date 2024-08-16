@@ -19,8 +19,8 @@ import Footer from "../src/components/Footer.vue";
 
 <style scoped>
 .app {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   min-height: 100vh;
   font-family: 'Arial', sans-serif;
   background-color: #f5f5f5;
@@ -33,7 +33,6 @@ import Footer from "../src/components/Footer.vue";
 }
 
 .main {
-  flex: 1;
   padding: 2rem;
   max-width: 1400px;
   margin: 0 auto;
