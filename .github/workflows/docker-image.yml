@@ -16,17 +16,20 @@ jobs:
 
     - name: Change directory into app directory and build docker image
       run: |
-        cd yagu-route-front
         pwd
         ls -al
-        docker build -t yaguroute-front-app .
+    #   run: |
+    #     cd yagu-route-front
+    #     pwd
+    #     ls -al
+    #     docker build -t yaguroute-front-app .
 
-    - name: Tagging created image and push
-      env:
-        DOCKER_ID: ${{ secrets.DOCKER_ID_YAGUROUTE }}
-        DOCKER_PWD: ${{ secrets.DOCKER_PWD_YAGUROUTE }}
-      run: |
-        docker login -u "$DOCKER_ID" -p "$DOCKER_PWD"
-        imagename="$DOCKER_ID"/yaguroute-front-app:$(date +%s)
-        docker image tag yaguroute-front-app $imagename
-        docker push $imagename
+    # - name: Tagging created image and push
+    #   env:
+    #     DOCKER_ID: ${{ secrets.DOCKER_ID_YAGUROUTE }}
+    #     DOCKER_PWD: ${{ secrets.DOCKER_PWD_YAGUROUTE }}
+    #   run: |
+    #     docker login -u "$DOCKER_ID" -p "$DOCKER_PWD"
+    #     imagename="$DOCKER_ID"/yaguroute-front-app:$(date +%s)
+    #     docker image tag yaguroute-front-app $imagename
+    #     docker push $imagename
