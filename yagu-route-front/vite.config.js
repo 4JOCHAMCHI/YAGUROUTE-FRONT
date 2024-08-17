@@ -18,7 +18,8 @@ export default defineConfig({
     proxy: {
       "/member": "http://localhost:8080",
       "/oauth2": "http://localhost:8080",
-      "/rest_login": "http://localhost:8080"
+      "/rest_login": "http://localhost:8080",
+      "/profile": "http://localhost:8080"
     }
   },
 })
