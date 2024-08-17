@@ -187,6 +187,17 @@ export default {
       }
     };
 
+    const fetchProfile = async () => {
+      try {
+        const response = await axios.get(`/profile`);
+        let profile = response.data;
+        user.value.name = profile.memberName;
+        user.value.email = profile.memberEmail;
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
     const applyFilters = () => {
       currentPage.value = 0;
       filteredGames.value = games.value.filter((game) => {
@@ -234,6 +245,7 @@ export default {
       fetchTeams();
       fetchStadiums();
       fetchTeamRanks();
+      fetchProfile();
     });
 
     return {
