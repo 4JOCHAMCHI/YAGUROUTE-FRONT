@@ -187,6 +187,17 @@ export default {
       }
     };
 
+    const fetchProfile = async () => {
+      try {
+        const response = await axios.get(`/profile`);
+        let profile = response.data;
+        user.value.name = profile.memberName;
+        user.value.email = profile.memberEmail;
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
     const applyFilters = () => {
       currentPage.value = 0;
       filteredGames.value = games.value.filter((game) => {
@@ -234,6 +245,7 @@ export default {
       fetchTeams();
       fetchStadiums();
       fetchTeamRanks();
+      fetchProfile();
     });
 
     return {
@@ -350,7 +362,7 @@ export default {
 
 .pagination-button {
   padding: 0.5rem 1rem;
-  background-color: #ff6b6b;
+  background-color: #1A237E;
   color: white;
   border: none;
   border-radius: 4px;
@@ -368,8 +380,8 @@ export default {
 
 .auth-button {
   padding: 0.75rem;
-  background-color: #ff6b6b;
-  color: white;
+  background-color: #B6D6F2;
+  color: #011640;
   border: none;
   border-radius: 4px;
   font-size: 1rem;
@@ -378,16 +390,24 @@ export default {
 }
 
 .auth-button:hover {
-  background-color: #ff5252;
+  background-color: #1A237E;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 추가 */
 }
 
 .book-button {
   padding: 0.5rem 1rem;
-  background-color: #ff6b6b;
-  color: white;
+  background-color: #B6D6F2;
+  color: #011640;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.book-button:hover {
+  background-color:  #1A237E;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* hover 시 그림자 추가 */
 }
 
 .book-button:disabled {

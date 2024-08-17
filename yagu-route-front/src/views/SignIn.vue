@@ -42,12 +42,14 @@ const redirectToNaverLogin = () => {
 
 const redirectToKakaoLogin = () => {
   // 네이버 로그인 엔드포인트로 리디렉션
-  window.location.href = '/oauth2/authorization/kakao'
+  // window.location.href = '/oauth2/authorization/kakao'
+  window.location.href = '/oauth2/kakao'
 }
 
 const redirectToGoogleLogin = () => {
   // 네이버 로그인 엔드포인트로 리디렉션
-  window.location.href = '/oauth2/authorization/google'
+  // window.location.href = '/oauth2/authorization/google'
+  window.location.href = '/oauth2/google'
 }
 </script>
 
