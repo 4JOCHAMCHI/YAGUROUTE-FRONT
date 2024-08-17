@@ -25,14 +25,12 @@ const routes = [
     {
         path: '/signin',
         name: 'SignIn',
-        component: SignIn,
-        props: true
+        component: SignIn
     },
     {
         path: '/signup',
         name: 'SignUp',
-        component: SignUp,
-        props: true
+        component: SignUp
     }
 ];
 
