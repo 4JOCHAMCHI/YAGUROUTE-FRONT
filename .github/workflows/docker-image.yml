@@ -18,6 +18,7 @@ jobs:
       run: |
         pwd
         ls -al
+        git branch -a
     #   run: |
     #     cd yagu-route-front
     #     pwd
