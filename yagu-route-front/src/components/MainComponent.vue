@@ -131,7 +131,7 @@ export default {
 
     const fetchGames = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/game/all');
+        const response = await axios.get('/api/game/all');
         games.value = response.data.sort((a, b) => new Date(a.gameDate) - new Date(b.gameDate));
         applyFilters();
       } catch (error) {
@@ -141,12 +141,12 @@ export default {
 
     const fetchTeamRanks = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/ranking/all');
+        const response = await axios.get('/api/ranking/all');
         teamRanks.value = response.data;
 
         for (let rank of teamRanks.value) {
           const logoResponse = await axios.get(
-              `http://localhost:8080/teams/logo/${rank.teamId}`
+              `/api/teams/logo/${rank.teamId}`
           );
           teamLogos.value[rank.teamId] = logoResponse.data;
         }
