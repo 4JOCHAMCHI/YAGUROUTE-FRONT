@@ -25,7 +25,7 @@ const isFormValid = computed(() => {
 const signup = async () => {
   if (isFormValid.value) {
     try {
-      let url = `/member/signup`;
+      let url = `/api/member/signup`;
       const response = await axios.post(url, {
         memberName: formData.name,
         memberEmail: formData.email,
