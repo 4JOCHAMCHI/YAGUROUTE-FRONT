@@ -21,7 +21,7 @@
           <p v-if="selectedSeat">{{ selectedSeat.seatNum }}</p>
           <p v-else>좌석을 선택해주세요.</p>
         </div>
-        <button @click="reserveSeat(id, selectedSeat.seatId)" :disabled="!selectedSeat">예매하기</button>
+        <button @click="reserveSeat(memberId, gameId, selectedSeat.seatId)" :disabled="!selectedSeat">예매하기</button>
       </div>
     </div>
   </div>
@@ -35,7 +35,9 @@ const props = defineProps({
   gameId: 0
 })
 
-const id = ref(props.gameId);
+const gameId = ref(props.gameId);
+const memberId = ref(0);
+
 const home = ref(null);
 const away = ref(null);
 
@@ -63,11 +65,11 @@ const selectSeat = (seat) => {
   selectedSeat.value = seat.seatId === selectedSeat.value?.seatId ? null : seat
 }
 
-const reserveSeat = async (gameId, seatId) => {
+const reserveSeat = async (memberId, gameId, seatId) => {
   if (selectedSeat.value) {
     try {
-      let url = `/api/ticket/1/${gameId}/${seatId}`;
-      const response = await axios.post(url)
+      let url = `/api/ticket/${memberId}/${gameId}/${seatId}`;
+      const response = await axios.post(url);
 
       alert(selectedSeat.value.seatNum + "번 " + response.data.message);
 
@@ -76,8 +78,25 @@ const reserveSeat = async (gameId, seatId) => {
       alert("Error: " + error.message);
     }
 
-    occupiedSeats.value.push(selectedSeat.value)
+    occupiedSeats.value.push(selectedSeat.value);
     selectedSeat.value = null
+  }
+}
+
+const fetchMember = async () => {
+  try {
+    let url = `/api/profile`;
+    const response = await axios.get(url);
+
+    if (response.status === 200) {
+      console.log(response);
+      memberId.value = response.data.memberId;
+
+    } else {
+      console.error("Error: Response status is not 200");
+    }
+  } catch (error) {
+    console.error("Fetch error: " + error.message);
   }
 }
 
@@ -137,11 +156,12 @@ const fetchOccupiedSeats = async (gameId) => {
 onMounted(async () => {
   try {
     const [allSeats, unavailableSeats] = await Promise.all([
-      fetchAllSeats(id.value),
-      fetchOccupiedSeats(id.value)
+      fetchAllSeats(gameId.value),
+      fetchOccupiedSeats(gameId.value)
     ])
 
-    await fetchTeams(id.value);
+    await fetchMember();
+    await fetchTeams(gameId.value);
 
     seats.value = allSeats;
     occupiedSeats.value = unavailableSeats;
