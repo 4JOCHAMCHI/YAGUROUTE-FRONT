@@ -14,19 +14,24 @@ export default defineConfig({
     }
   },
   server: {
-    // port: 5137,
+    port: 5137,
     // proxy: {
+    //   "/api": "http://localhost:8080",
     //   "/member": "http://localhost:8080",
     //   "/oauth2": "http://localhost:8080",
     //   "/rest_login": "http://localhost:8080",
     //   "/profile": "http://localhost:8080"
     // }
     proxy: {
-      '/api': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
+      // '/api': {
+      //   target: 'http://localhost:8080',
+      //   changeOrigin: true,
+      //   rewrite: (path) => path.replace(/^\/api/, '')
+      // },
+      "/api": "http://localhost:8080",
+      "/oauth2": "http://localhost:8080",
+      "/login": "http://localhost:8080",
+      "/rest_login": "http://localhost:8080",
     }
   },
 })
