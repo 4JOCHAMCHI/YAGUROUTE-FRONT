@@ -69,6 +69,8 @@ const reserveSeat = async (gameId, seatId) => {
   if (selectedSeat.value) {
     try {
       let url = `/api/ticket/1/${gameId}/${seatId}`;
+      console.log(url);
+
       const response = await axios.post(url);
 
       console.log(url);
