@@ -39,7 +39,7 @@
               <button
                   class="book-button"
                   :disabled="game.sellable !== 'S'"
-                  @click="bookGame(game.gameId)"
+                  @click="goToBookingPage(game.gameId)"
               >
                 {{ game.sellable === 'S' ? '예매하기' : '예매불가' }}
               </button>
@@ -95,6 +95,7 @@
 <script>
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
+import router from "@/router/router.js";
 
 export default {
   setup() {
@@ -161,16 +162,6 @@ export default {
       }
     };
 
-    const fetchTeams = async () => {
-      const response = await axios.get('/api/teams/all');
-      teams.value = response.data;
-    };
-
-    const fetchStadiums = async () => {
-      const response = await axios.get('/api/stadiums/all');
-      stadiums.value = response.data;
-    };
-
     const fetchTeamRanks = async () => {
       try {
         const response = await axios.get('/api/ranking/all');
@@ -231,8 +222,8 @@ export default {
       return team ? team.teamName : `팀 ${teamId}`;
     };
 
-    const bookGame = (gameId) => {
-      console.log(`예매하기: ${gameId}`);
+    const goToBookingPage = (gameId) => {
+      router.push({ name: 'TicketBookingView', params: { gameId } });
     };
 
     const logout = () => {
@@ -242,8 +233,6 @@ export default {
 
     onMounted(() => {
       fetchGames();
-      fetchTeams();
-      fetchStadiums();
       fetchTeamRanks();
       fetchProfile();
     });
@@ -266,7 +255,7 @@ export default {
       formatDate,
       formatTime,
       getTeamName,
-      bookGame,
+      goToBookingPage,
       logout,
       applyFilters,
       user,
