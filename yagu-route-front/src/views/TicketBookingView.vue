@@ -71,6 +71,9 @@ const reserveSeat = async (gameId, seatId) => {
       let url = `/api/ticket/1/${gameId}/${seatId}`;
       const response = await axios.post(url);
 
+      console.log(url);
+      console.log(response);
+
       alert(selectedSeat.value.seatNum + "번 " + response.data.message);
 
     } catch (error) {
@@ -79,7 +82,7 @@ const reserveSeat = async (gameId, seatId) => {
     }
 
     occupiedSeats.value.push(selectedSeat.value);
-    selectedSeat.value = null
+    selectedSeat.value = null;
   }
 }
 
