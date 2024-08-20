@@ -226,9 +226,11 @@ export default {
       router.push({ name: 'TicketBookingView', params: { gameId } });
     };
 
-    const logout = () => {
+    const logout = async () => {
       console.log('로그아웃');
       // 로그아웃 로직 구현
+      let url = `/api/logout`;
+      const response = await axios.post(url, {});
     };
 
     onMounted(() => {
