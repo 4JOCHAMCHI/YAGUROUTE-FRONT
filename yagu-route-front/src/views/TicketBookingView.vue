@@ -29,7 +29,21 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import axios from "axios";
+import router from "@/router/router.js";
+// import axios from "axios";
+import { default as _axios} from "axios"; // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import
+
+// https://stackoverflow.com/a/48990696
+const axios = _axios.create();
+axios.interceptors.response.use(
+    response => response,
+    error => {
+      // https://axios-http.com/docs/handling_errors
+      if (error.response.status === 401)
+        router.push('/signin')
+      // throw error;
+    }
+);
 
 const props = defineProps({
   gameId: 0
