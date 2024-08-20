@@ -66,7 +66,7 @@ const selectSeat = (seat) => {
 const reserveSeat = async (gameId, seatId) => {
   if (selectedSeat.value) {
     try {
-      let url = `http://localhost:8080/ticket/1/${gameId}/${seatId}`;
+      let url = `/api/ticket/1/${gameId}/${seatId}`;
       const response = await axios.post(url)
 
       alert(selectedSeat.value.seatNum + "번 " + response.data.message);
@@ -83,7 +83,7 @@ const reserveSeat = async (gameId, seatId) => {
 
 const fetchTeams = async (gameId) => {
   try {
-    let url = `http://localhost:8080/game/teams/${gameId}`;
+    let url = `/api/game/teams/${gameId}`;
     const response = await axios.get(url);
 
     if (response.status === 200) {
@@ -102,7 +102,7 @@ const fetchTeams = async (gameId) => {
 // 전체 좌석 정보를 가져오는 함수
 const fetchAllSeats = async (gameId) => {
   try {
-    let url = `http://localhost:8080/seat/all/${gameId}`;
+    let url = `/api/seat/all/${gameId}`;
     const response = await axios.get(url);
 
     if (response.status === 200) {
@@ -120,7 +120,7 @@ const fetchAllSeats = async (gameId) => {
 // 예매 불가능한 좌석 정보를 가져오는 함수
 const fetchOccupiedSeats = async (gameId) => {
   try {
-    let url = `http://localhost:8080/seat/occupied/${gameId}`;
+    let url = `/api/seat/occupied/${gameId}`;
     const response = await axios.get(url);
 
     if (response.status === 200) {
