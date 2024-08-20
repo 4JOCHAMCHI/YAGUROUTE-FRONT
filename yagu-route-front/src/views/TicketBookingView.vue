@@ -21,7 +21,7 @@
           <p v-if="selectedSeat">{{ selectedSeat.seatNum }}</p>
           <p v-else>좌석을 선택해주세요.</p>
         </div>
-        <button @click="reserveSeat(memberId, gameId, selectedSeat.seatId)" :disabled="!selectedSeat">예매하기</button>
+        <button @click="reserveSeat(gameId, selectedSeat.seatId)" :disabled="!selectedSeat">예매하기</button>
       </div>
     </div>
   </div>
