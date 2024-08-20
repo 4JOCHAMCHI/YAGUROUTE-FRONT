@@ -65,10 +65,10 @@ const selectSeat = (seat) => {
   selectedSeat.value = seat.seatId === selectedSeat.value?.seatId ? null : seat
 }
 
-const reserveSeat = async (memberId, gameId, seatId) => {
+const reserveSeat = async (gameId, seatId) => {
   if (selectedSeat.value) {
     try {
-      let url = `/api/ticket/${memberId}/${gameId}/${seatId}`;
+      let url = `/api/ticket/1/${gameId}/${seatId}`;
       const response = await axios.post(url);
 
       alert(selectedSeat.value.seatNum + "번 " + response.data.message);
